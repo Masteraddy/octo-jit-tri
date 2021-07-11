@@ -1,24 +1,24 @@
 /* global interfaceConfig */
 
-import React from 'react';
+import React from "react";
 
-import { isMobileBrowser } from '../../base/environment/utils';
-import { translate, translateToHTML } from '../../base/i18n';
-import { Icon, IconWarning } from '../../base/icons';
-import { Watermarks } from '../../base/react';
-import { connect } from '../../base/redux';
-import { CalendarList } from '../../calendar-sync';
-import { RecentList } from '../../recent-list';
-import { SettingsButton, SETTINGS_TABS } from '../../settings';
+import { isMobileBrowser } from "../../base/environment/utils";
+import { translate, translateToHTML } from "../../base/i18n";
+import { Icon, IconWarning } from "../../base/icons";
+import { Watermarks } from "../../base/react";
+import { connect } from "../../base/redux";
+import { CalendarList } from "../../calendar-sync";
+import { RecentList } from "../../recent-list";
+import { SettingsButton, SETTINGS_TABS } from "../../settings";
 
-import { AbstractWelcomePage, _mapStateToProps } from './AbstractWelcomePage';
-import Tabs from './Tabs';
+import { AbstractWelcomePage, _mapStateToProps } from "./AbstractWelcomePage";
+import Tabs from "./Tabs";
 
 /**
  * The pattern used to validate room name.
  * @type {string}
  */
-export const ROOM_NAME_VALIDATE_PATTERN_STR = '^[^?&:\u0022\u0027%#]+$';
+export const ROOM_NAME_VALIDATE_PATTERN_STR = "^[^?&:\u0022\u0027%#]+$";
 
 /**
  * The Web container rendering the welcome page.
@@ -32,7 +32,7 @@ class WelcomePage extends AbstractWelcomePage {
      * @static
      */
     static defaultProps = {
-        _room: ''
+        _room: "",
     };
 
     /**
@@ -49,7 +49,7 @@ class WelcomePage extends AbstractWelcomePage {
 
             generateRoomnames:
                 interfaceConfig.GENERATE_ROOMNAMES_ON_WELCOME_PAGE,
-            selectedTab: 0
+            selectedTab: 0,
         };
 
         /**
@@ -81,7 +81,8 @@ class WelcomePage extends AbstractWelcomePage {
          * @type {HTMLTemplateElement|null}
          */
         this._additionalCardTemplate = document.getElementById(
-            'welcome-page-additional-card-template');
+            "welcome-page-additional-card-template"
+        );
 
         /**
          * The template to use as the main content for the welcome page. If
@@ -91,7 +92,8 @@ class WelcomePage extends AbstractWelcomePage {
          * @type {HTMLTemplateElement|null}
          */
         this._additionalContentTemplate = document.getElementById(
-            'welcome-page-additional-content-template');
+            "welcome-page-additional-content-template"
+        );
 
         /**
          * The template to use as the additional content for the welcome page header toolbar.
@@ -101,18 +103,18 @@ class WelcomePage extends AbstractWelcomePage {
          * @type {HTMLTemplateElement|null}
          */
         this._additionalToolbarContentTemplate = document.getElementById(
-            'settings-toolbar-additional-content-template'
+            "settings-toolbar-additional-content-template"
         );
 
         // Bind event handlers so they are only bound once per instance.
         this._onFormSubmit = this._onFormSubmit.bind(this);
         this._onRoomChange = this._onRoomChange.bind(this);
         this._setAdditionalCardRef = this._setAdditionalCardRef.bind(this);
-        this._setAdditionalContentRef
-            = this._setAdditionalContentRef.bind(this);
+        this._setAdditionalContentRef =
+            this._setAdditionalContentRef.bind(this);
         this._setRoomInputRef = this._setRoomInputRef.bind(this);
-        this._setAdditionalToolbarContentRef
-            = this._setAdditionalToolbarContentRef.bind(this);
+        this._setAdditionalToolbarContentRef =
+            this._setAdditionalToolbarContentRef.bind(this);
         this._onTabSelected = this._onTabSelected.bind(this);
         this._renderFooter = this._renderFooter.bind(this);
     }
@@ -127,7 +129,7 @@ class WelcomePage extends AbstractWelcomePage {
     componentDidMount() {
         super.componentDidMount();
 
-        document.body.classList.add('welcome-page');
+        document.body.classList.add("welcome-page");
         document.title = interfaceConfig.APP_NAME;
 
         if (this.state.generateRoomnames) {
@@ -136,7 +138,8 @@ class WelcomePage extends AbstractWelcomePage {
 
         if (this._shouldShowAdditionalContent()) {
             this._additionalContentRef.appendChild(
-                this._additionalContentTemplate.content.cloneNode(true));
+                this._additionalContentTemplate.content.cloneNode(true)
+            );
         }
 
         if (this._shouldShowAdditionalToolbarContent()) {
@@ -161,7 +164,7 @@ class WelcomePage extends AbstractWelcomePage {
     componentWillUnmount() {
         super.componentWillUnmount();
 
-        document.body.classList.remove('welcome-page');
+        document.body.classList.remove("welcome-page");
     }
 
     /**
@@ -172,109 +175,105 @@ class WelcomePage extends AbstractWelcomePage {
      */
     render() {
         const { _moderatedRoomServiceUrl, t } = this.props;
-        const { DEFAULT_WELCOME_PAGE_LOGO_URL, DISPLAY_WELCOME_FOOTER } = interfaceConfig;
+        const { DEFAULT_WELCOME_PAGE_LOGO_URL, DISPLAY_WELCOME_FOOTER } =
+            interfaceConfig;
         const showAdditionalCard = this._shouldShowAdditionalCard();
         const showAdditionalContent = this._shouldShowAdditionalContent();
-        const showAdditionalToolbarContent = this._shouldShowAdditionalToolbarContent();
-        const contentClassName = showAdditionalContent ? 'with-content' : 'without-content';
-        const footerClassName = DISPLAY_WELCOME_FOOTER ? 'with-footer' : 'without-footer';
+        const showAdditionalToolbarContent =
+            this._shouldShowAdditionalToolbarContent();
+        const contentClassName = showAdditionalContent
+            ? "with-content"
+            : "without-content";
+        const footerClassName = DISPLAY_WELCOME_FOOTER
+            ? "with-footer"
+            : "without-footer";
 
         return (
-            <div
-                className = { `welcome ${contentClassName} ${footerClassName}` }
-                id = 'welcome_page'>
-                <div className = 'welcome-watermark'>
-                    <Watermarks defaultJitsiLogoURL = { DEFAULT_WELCOME_PAGE_LOGO_URL } />
-                </div>
-
-                <div className = 'header'>
-                    <div className = 'welcome-page-settings'>
-                        <SettingsButton
-                            defaultTab = { SETTINGS_TABS.CALENDAR } />
-                        { showAdditionalToolbarContent
-                            ? <div
-                                className = 'settings-toolbar-content'
-                                ref = { this._setAdditionalToolbarContentRef } />
-                            : null
-                        }
+            <div className="mx-auto overflow-hidden">
+                <div className="flex flex-col md:flex-row bg-dark-blue w-full h-full">
+                    <div className="flex flex-col items-center p-6 w-full min-h-screen justify-center">
+                        <h2 className="w-80 text-base text-center">
+                            Maintaining physical <br />
+                            connections virtually with no <br />
+                            dull moment
+                        </h2>
+                        <img
+                            src="/assets/img/tric=vho.png"
+                            className="w-full max-w-lg py-8"
+                            alt=""
+                        />
+                        <p className="text-xs text-center">
+                            Trivoh Mobile App Download our App <br />
+                            to start a meeting anywhere and everywhere
+                        </p>
+                        <div className="flex flex-wrap justify-around">
+                            <a href="#" className="m-3">
+                                <img
+                                    src="./assets/img/app-store-badge.png"
+                                    alt=""
+                                />
+                            </a>
+                            <a href="#" className="m-3">
+                                <img
+                                    src="./assets/img/google-play-badge.png"
+                                    alt=""
+                                />
+                            </a>
+                        </div>
                     </div>
-                    <div className = 'header-image' />
-                    <div className = 'header-container'>
-                        <h1 className = 'header-text-title'>
-                            { t('welcomepage.headerTitle') }
-                        </h1>
-                        <span className = 'header-text-subtitle'>
-                            { t('welcomepage.headerSubtitle')}
-                        </span>
-                        <div id = 'enter_room'>
-                            <div className = 'enter-room-input-container'>
-                                <form onSubmit = { this._onFormSubmit }>
-                                    <input
-                                        aria-disabled = 'false'
-                                        aria-label = 'Meeting name input'
-                                        autoFocus = { true }
-                                        className = 'enter-room-input'
-                                        id = 'enter_room_field'
-                                        onChange = { this._onRoomChange }
-                                        pattern = { ROOM_NAME_VALIDATE_PATTERN_STR }
-                                        placeholder = { this.state.roomPlaceholder }
-                                        ref = { this._setRoomInputRef }
-                                        title = { t('welcomepage.roomNameAllowedChars') }
-                                        type = 'text'
-                                        value = { this.state.room } />
-                                    <div
-                                        className = { _moderatedRoomServiceUrl
-                                            ? 'warning-with-link'
-                                            : 'warning-without-link' }>
-                                        { this._renderInsecureRoomNameWarning() }
-                                    </div>
-                                </form>
+                    <div className="flex flex-col p-6 bg-gray-100 w-full min-h-screen items-center justify-center">
+                        <img
+                            src="./assets/img/trivohlogo.png"
+                            className="w-48"
+                            alt=""
+                        />
+                        <form
+                            className="w-full md:max-w-sm"
+                            onSubmit={this._onFormSubmit}
+                        >
+                            <div className="w-full py-2 text-lg font-semibold text-center rounded mb-3 bg-gray-600 text-gray-100">
+                                Join Meeting
                             </div>
+                            <input
+                                type="text"
+                                placeholder="Name"
+                                className="w-full p-3 text-lg font-semibold my-3 border-gray-300 outline-none rounded bg-white text-gray-600"
+                            />
+                            <input
+                                type="text"
+                                aria-disabled="false"
+                                aria-label="Meeting name input"
+                                autoFocus={true}
+                                // className="enter-room-input"
+                                id="enter_room_field"
+                                onChange={this._onRoomChange}
+                                pattern={ROOM_NAME_VALIDATE_PATTERN_STR}
+                                placeholder={this.state.roomPlaceholder}
+                                ref={this._setRoomInputRef}
+                                placeholder="Meeting ID"
+                                value={this.state.room}
+                                className="w-full p-3 text-lg font-semibold my-3 border-gray-300 outline-none rounded bg-white text-gray-600"
+                            />
                             <button
-                                aria-disabled = 'false'
-                                aria-label = 'Start meeting'
-                                className = 'welcome-page-button'
-                                id = 'enter_room_button'
-                                onClick = { this._onFormSubmit }
-                                tabIndex = '0'
-                                type = 'button'>
-                                { t('welcomepage.startMeeting') }
+                                aria-disabled="false"
+                                aria-label="Start meeting"
+                                // className="welcome-page-button"
+                                id="enter_room_button"
+                                onClick={this._onFormSubmit}
+                                tabIndex="0"
+                                type="button"
+                                className="w-full py-2 text-lg font-bold text-center rounded-full my-3 bg-trivoh text-yellow-100"
+                            >
+                                Join Now
                             </button>
-                        </div>
-
-                        { _moderatedRoomServiceUrl && (
-                            <div id = 'moderated-meetings'>
-                                <p>
-                                    {
-                                        translateToHTML(
-                                        t, 'welcomepage.moderatedMessage', { url: _moderatedRoomServiceUrl })
-                                    }
-                                </p>
-                            </div>)}
+                            <div className="text-center my-5">
+                                <a href="login.html">Sign In</a> |{" "}
+                                <a href="signup.html">Sign Up</a>
+                            </div>
+                        </form>
                     </div>
                 </div>
-
-                <div className = 'welcome-cards-container'>
-                    <div className = 'welcome-card-row'>
-                        <div className = 'welcome-tabs welcome-card welcome-card--blue'>
-                            { this._renderTabs() }
-                        </div>
-                        { showAdditionalCard
-                            ? <div
-                                className = 'welcome-card welcome-card--dark'
-                                ref = { this._setAdditionalCardRef } />
-                            : null }
-                    </div>
-
-                    { showAdditionalContent
-                        ? <div
-                            className = 'welcome-page-content'
-                            ref = { this._setAdditionalContentRef } />
-                        : null }
-                </div>
-                { DISPLAY_WELCOME_FOOTER && this._renderFooter()}
             </div>
-
         );
     }
 
@@ -285,11 +284,9 @@ class WelcomePage extends AbstractWelcomePage {
      */
     _doRenderInsecureRoomNameWarning() {
         return (
-            <div className = 'insecure-room-name-warning'>
-                <Icon src = { IconWarning } />
-                <span>
-                    { this.props.t('security.insecureRoomNameWarning') }
-                </span>
+            <div className="insecure-room-name-warning">
+                <Icon src={IconWarning} />
+                <span>{this.props.t("security.insecureRoomNameWarning")}</span>
             </div>
         );
     }
@@ -345,39 +342,53 @@ class WelcomePage extends AbstractWelcomePage {
         const {
             MOBILE_DOWNLOAD_LINK_ANDROID,
             MOBILE_DOWNLOAD_LINK_F_DROID,
-            MOBILE_DOWNLOAD_LINK_IOS
+            MOBILE_DOWNLOAD_LINK_IOS,
         } = interfaceConfig;
 
-        return (<footer className = 'welcome-footer'>
-            <div className = 'welcome-footer-centered'>
-                <div className = 'welcome-footer-padded'>
-                    <div className = 'welcome-footer-row-block welcome-footer--row-1'>
-                        <div className = 'welcome-footer-row-1-text'>{t('welcomepage.jitsiOnMobile')}</div>
-                        <a
-                            className = 'welcome-badge'
-                            href = { MOBILE_DOWNLOAD_LINK_IOS }>
-                            <img
-                                alt = { t('welcomepage.mobileDownLoadLinkIos') }
-                                src = './images/app-store-badge.png' />
-                        </a>
-                        <a
-                            className = 'welcome-badge'
-                            href = { MOBILE_DOWNLOAD_LINK_ANDROID }>
-                            <img
-                                alt = { t('welcomepage.mobileDownLoadLinkAndroid') }
-                                src = './images/google-play-badge.png' />
-                        </a>
-                        <a
-                            className = 'welcome-badge'
-                            href = { MOBILE_DOWNLOAD_LINK_F_DROID }>
-                            <img
-                                alt = { t('welcomepage.mobileDownLoadLinkFDroid') }
-                                src = './images/f-droid-badge.png' />
-                        </a>
+        return (
+            <footer className="welcome-footer">
+                <div className="welcome-footer-centered">
+                    <div className="welcome-footer-padded">
+                        <div className="welcome-footer-row-block welcome-footer--row-1">
+                            <div className="welcome-footer-row-1-text">
+                                {t("welcomepage.jitsiOnMobile")}
+                            </div>
+                            <a
+                                className="welcome-badge"
+                                href={MOBILE_DOWNLOAD_LINK_IOS}
+                            >
+                                <img
+                                    alt={t("welcomepage.mobileDownLoadLinkIos")}
+                                    src="./images/app-store-badge.png"
+                                />
+                            </a>
+                            <a
+                                className="welcome-badge"
+                                href={MOBILE_DOWNLOAD_LINK_ANDROID}
+                            >
+                                <img
+                                    alt={t(
+                                        "welcomepage.mobileDownLoadLinkAndroid"
+                                    )}
+                                    src="./images/google-play-badge.png"
+                                />
+                            </a>
+                            <a
+                                className="welcome-badge"
+                                href={MOBILE_DOWNLOAD_LINK_F_DROID}
+                            >
+                                <img
+                                    alt={t(
+                                        "welcomepage.mobileDownLoadLinkFDroid"
+                                    )}
+                                    src="./images/f-droid-badge.png"
+                                />
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </footer>);
+            </footer>
+        );
     }
 
     /**
@@ -397,15 +408,15 @@ class WelcomePage extends AbstractWelcomePage {
 
         if (_calendarEnabled) {
             tabs.push({
-                label: t('welcomepage.calendar'),
-                content: <CalendarList />
+                label: t("welcomepage.calendar"),
+                content: <CalendarList />,
             });
         }
 
         if (_recentListEnabled) {
             tabs.push({
-                label: t('welcomepage.recentList'),
-                content: <RecentList />
+                label: t("welcomepage.recentList"),
+                content: <RecentList />,
             });
         }
 
@@ -415,9 +426,11 @@ class WelcomePage extends AbstractWelcomePage {
 
         return (
             <Tabs
-                onSelect = { this._onTabSelected }
-                selected = { this.state.selectedTab }
-                tabs = { tabs } />);
+                onSelect={this._onTabSelected}
+                selected={this.state.selectedTab}
+                tabs={tabs}
+            />
+        );
     }
 
     /**
@@ -478,10 +491,12 @@ class WelcomePage extends AbstractWelcomePage {
      * @returns {boolean}
      */
     _shouldShowAdditionalCard() {
-        return interfaceConfig.DISPLAY_WELCOME_PAGE_ADDITIONAL_CARD
-            && this._additionalCardTemplate
-            && this._additionalCardTemplate.content
-            && this._additionalCardTemplate.innerHTML.trim();
+        return (
+            interfaceConfig.DISPLAY_WELCOME_PAGE_ADDITIONAL_CARD &&
+            this._additionalCardTemplate &&
+            this._additionalCardTemplate.content &&
+            this._additionalCardTemplate.innerHTML.trim()
+        );
     }
 
     /**
@@ -492,10 +507,12 @@ class WelcomePage extends AbstractWelcomePage {
      * @returns {boolean}
      */
     _shouldShowAdditionalContent() {
-        return interfaceConfig.DISPLAY_WELCOME_PAGE_CONTENT
-            && this._additionalContentTemplate
-            && this._additionalContentTemplate.content
-            && this._additionalContentTemplate.innerHTML.trim();
+        return (
+            interfaceConfig.DISPLAY_WELCOME_PAGE_CONTENT &&
+            this._additionalContentTemplate &&
+            this._additionalContentTemplate.content &&
+            this._additionalContentTemplate.innerHTML.trim()
+        );
     }
 
     /**
@@ -506,10 +523,12 @@ class WelcomePage extends AbstractWelcomePage {
      * @returns {boolean}
      */
     _shouldShowAdditionalToolbarContent() {
-        return interfaceConfig.DISPLAY_WELCOME_PAGE_TOOLBAR_ADDITIONAL_CONTENT
-            && this._additionalToolbarContentTemplate
-            && this._additionalToolbarContentTemplate.content
-            && this._additionalToolbarContentTemplate.innerHTML.trim();
+        return (
+            interfaceConfig.DISPLAY_WELCOME_PAGE_TOOLBAR_ADDITIONAL_CONTENT &&
+            this._additionalToolbarContentTemplate &&
+            this._additionalToolbarContentTemplate.content &&
+            this._additionalToolbarContentTemplate.innerHTML.trim()
+        );
     }
 }
 

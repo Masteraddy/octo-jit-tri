@@ -9,6 +9,7 @@
 
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <link rel="stylesheet" href="css/all.css">
+    <link rel="stylesheet" href="css/styles.css">
     <link rel="manifest" id="manifest-placeholder">
 
     <script>
@@ -61,7 +62,8 @@
             "logging_config.js",
             "lib-jitsi-meet.min.js",
             "app.bundle.min.js",
-            "all.css"
+            "all.css",
+            "styles.css"
         ];
         var loadErrHandler = function(e) {
             var target = e.target;
@@ -172,11 +174,11 @@
         window.addEventListener(
             'error', loadErrHandler, true /* capture phase type of listener */);
     </script>
-    <script><!--#include virtual="/config.js" --></script><!-- adapt to your needs, i.e. set hosts and bosh path -->
+    <script src="/config.js" ></script><!-- adapt to your needs, i.e. set hosts and bosh path -->
     <!--#include virtual="connection_optimization/connection_optimization.html" -->
     <script src="libs/do_external_connect.min.js?v=1"></script>
-    <script><!--#include virtual="/interface_config.js" --></script>
-    <script><!--#include virtual="/logging_config.js" --></script>
+    <script src="/interface_config.js" ></script>
+    <script src="/logging_config.js" ></script>
     <script src="libs/lib-jitsi-meet.min.js?v=139"></script>
     <script src="libs/app.bundle.min.js?v=139"></script>
     <!--#include virtual="title.html" -->

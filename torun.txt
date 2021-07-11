@@ -1,0 +1,41 @@
+npm install --prefix resources/load-test && npm run build --prefix resources/load-test
+
+./node_modules/.bin/webpack -p
+
+./node_modules/.bin/webpack-dev-server --detect-circular-deps
+
+https://download.jitsi.org/jitsi-meet/src/
+
+live-server --https=C:\Users\Haryormeedey\AppData\Roaming\npm\node_modules\live-server-https
+
+
+
+    <script><!--#include virtual="/interface_config.js" --></script>
+    <script><!--#include virtual="/logging_config.js" --></script>
+
+I will add that a much better approach using this technique is to override the CSS in your own file, not modify the all.css file. Here is how you do this.
+
+1 - Edit the “body.html” file (It’s blank on fresh installs)
+sudo vi /usr/share/jitsi-meet/body.html
+
+_
+
+2 - Add references to your own CSS and JS.
+<script src="custom.js?v=1"></script><link rel="stylesheet" href="css/custom.css?v=1">
+
+_
+
+3 - Create custom.css and save it with the new styles
+sudo vi /usr/share/jitsi-meet/css/custom.css
+In this case you want to change the home page text:
+
+.welcome .header .header-text-title { display:none !important }
+
+.welcome .header .header-text:before { content:'this is a new title'; color: #fff; font-size: 2.5rem; font-weight: 500; line-height: 1.18; }
+
+_
+
+4 - Create custom.js and use this to put any new functions you may want.
+sudo vi /usr/share/jitsi-meet/custom.js
+
+This will work with overriding other styles, html and javascript.
